@@ -1,5 +1,7 @@
 ## Xcode
 .DS_Store
+.xcodeproj
+.xcworkspace
 
 ## Build generated
 build/
