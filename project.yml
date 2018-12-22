@@ -1,0 +1,68 @@
+name: SwifterSwift
+
+settings:
+  base:
+    PRODUCT_BUNDLE_IDENTIFIER: com.swifterswift
+
+options:
+  usesTabs: false
+  indentWidth: 4
+  tabWidth: 4
+  bundleIdPrefix: com.swifterswift
+  deploymentTarget:
+    iOS: "9.0"
+    macOS: "10.10"
+    tvOS: "9.0"
+    watchOS: "2.0"
+
+targets:
+  SwifterSwift:
+    type: framework
+    platform: [iOS, tvOS, macOS]
+    name: SwifterSwift-$platform
+    sources:
+      - Sources
+    postCompileScripts:
+      - script: swiftlint
+        name: Swiftlint
+    scheme:
+      gatherCoverageData: true
+      testTargets:
+        - SwifterSwift-$platformTests
+
+  WatchOS:
+    type: framework
+    platform: [watchOS]
+    name: SwifterSwift-$platform
+    sources:
+      - Sources
+    postCompileScripts:
+      - script: swiftlint
+        name: Swiftlint
+
+  iOSTests:
+    type: bundle.unit-test
+    platform: [iOS]
+    name: SwifterSwift-$platformTests
+    sources:
+      - Tests
+    dependencies:
+      - target: SwifterSwift-$platform
+    postCompileScripts:
+      - script: swiftlint
+        name: Swiftlint
+
+  OtherTests:
+    type: bundle.unit-test
+    platform: [macOS, tvOS]
+    name: SwifterSwift-$platformTests
+    sources:
+      - path: Tests
+        excludes:
+        - "**/*.xib"
+        - "**/*.storyboard"
+    dependencies:
+      - target: SwifterSwift-$platform
+    postCompileScripts:
+      - script: swiftlint
+        name: Swiftlint
